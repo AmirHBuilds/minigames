@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Farida's English Challenge - Happy Birthday!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    min-height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden;
+  }
+  .fa, .persian { font-family:'Vazirmatn','Tahoma',sans-serif; }
+  #app {
+    width:100%; max-width:420px; height:100vh; max-height:860px; position:relative;
+    background:#2d3748; box-shadow:0 10px 40px rgba(0,0,0,.35); overflow:hidden;
+  }
+  .screen { position:absolute; top:0; right:0; bottom:0; left:0; display:none; flex-direction:column; }
+  .screen.active { display:flex; animation:screenIn .35s ease; }
+  @keyframes screenIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .pillBtn { background:rgba(255,255,255,.2); color:#fff; border:none; border-radius:20px; cursor:pointer; }
+  .roundBtn {
+    background:rgba(255,255,255,.2); color:#fff; border:none; width:32px; height:32px; border-radius:50%;
+    font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:none;
+    backdrop-filter:blur(4px); box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  button, .pin, .bubble, .matchCard { transition:transform .12s ease; }
+  button:active, .bubble:active, .matchCard:active { transform:scale(.94); }
+
+  /* ============ OPENING: the actual certificate ============ */
+  #screen-start { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); justify-content:center; align-items:center; padding:24px; overflow-y:auto; }
+  #certificate {
+    background:linear-gradient(180deg,#fff 0%,#fdfaf3 100%); padding:26px 24px; border-radius:22px;
+    box-shadow:0 16px 50px rgba(0,0,0,.35), 0 0 0 1px rgba(212,175,55,.15);
+    max-width:330px; width:100%; text-align:center; position:relative; border:3px solid gold; margin-top:20px;
+  }
+  #certificate::before { content:'\1F389'; position:absolute; top:-18px; left:18px; font-size:34px; }
+  #certificate::after { content:'\1F382'; position:absolute; top:-18px; right:18px; font-size:34px; }
+  #certificate h2 { color:#2d3748; font-size:19px; margin-bottom:8px; font-weight:bold; }
+  #certificate h3 { color:#e53e3e; font-size:22px; margin-bottom:12px; font-weight:bold; }
+  #certificate p { color:#4a5568; font-size:13px; line-height:1.55; margin-bottom:8px; }
+  #certificate .success { color:#38a169; font-weight:bold; }
+  #certificate .persian { font-size:18px; color:#764ba2; margin:12px 0; font-weight:bold; }
+  #certificate .nextPart { border-top:1px dashed #cbd5e0; margin-top:14px; padding-top:14px; }
+  #certificate .nextPart .newChallenge { color:#2d3748; font-weight:700; font-size:14px; }
+  .bigBtn {
+    margin-top:18px; background:#fff; color:#667eea; border:none; padding:13px 34px;
+    font-size:15px; font-weight:bold; border-radius:30px; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,.2);
+  }
+
+  /* ============ MAP ============ */
+  #screen-map { background:#2d3748; }
+  #mapHeader { padding:14px 16px; text-align:center; background:linear-gradient(180deg,#4a5568 0%,#2d3748 100%); }
+  #mapHeader h2 { color:#fff; font-size:16px; }
+  #mapHeader .sub { color:rgba(255,255,255,.7); font-size:11px; margin-top:2px; }
+  #mapScroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+  #mapWrap { position:relative; width:100%; line-height:0; }
+  #mapWrap img { width:100%; display:block; }
+  .pin { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; cursor:pointer; filter:drop-shadow(0 4px 8px rgba(0,0,0,.45)); }
+  .pin.locked { cursor:default; filter:drop-shadow(0 4px 8px rgba(0,0,0,.3)) grayscale(.5); opacity:.75; }
+  .pin .dot { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:3px solid #fff; animation:pinPulse 2.4s ease-in-out infinite; }
+  .pin.locked .dot { animation:none; }
+  .pin .dot svg { width:22px; height:22px; color:#fff; }
+  .pin.cat-green .dot { background:#48bb78; } .pin.cat-red .dot { background:#e53e3e; } .pin.cat-amber .dot { background:#c98a1f; } .pin.done .dot { background:#38a169; }
+  @keyframes pinPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5);} 50%{box-shadow:0 0 0 8px rgba(255,255,255,0);} }
+  .pin .label { margin-top:4px; background:rgba(45,55,72,.85); color:#fff; font-size:11px; font-weight:700; padding:3px 9px; border-radius:10px; white-space:nowrap; }
+
+  /* ============ DRIVING ============ */
+  #screen-driving { background:#1a202c; }
+  #drivingUi { padding:14px 15px; background:linear-gradient(180deg,#4a5568 0%,#2d3748 100%); position:relative; }
+  #drivingUi .cap { color:#fbd38d; font-size:13px; text-align:center; font-weight:600; }
+  #driveSkip { position:absolute; top:10px; right:12px; padding:6px 12px; font-size:11px; }
+  #driveCanvas { flex:1; width:100%; display:block; }
+
+  /* ============ LOCATION shell ============ */
+  #screen-location { background:#2d3748; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  #scene { position:relative; width:100%; height:300px; flex:none; overflow:hidden; }
+  #scene img.bg { position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; object-fit:cover; filter:saturate(1.25) brightness(1.08) contrast(1.02); }
+  #scene::after { content:''; position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:none; background:linear-gradient(180deg,rgba(45,55,72,0) 55%,rgba(45,55,72,.4) 100%); }
+  #bubbleTxt {
+    position:absolute; top:12px; left:50%; transform:translateX(-50%); background:#fff; color:#2d3748;
+    font-size:13px; font-weight:600; padding:8px 14px; border-radius:14px; max-width:84%; text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.2); z-index:4;
+  }
+  #character { position:absolute; bottom:0; left:50%; width:40%; max-width:155px; transform:translateX(-50%); animation:bob 2.6s ease-in-out infinite; }
+  #character img { width:100%; display:block; filter:drop-shadow(0 10px 8px rgba(0,0,0,.4)); }
+  @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-5px);} }
+  #character.talking { animation:pulse .5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{transform:translateX(-50%) translateY(0) scale(1);} 50%{transform:translateX(-50%) translateY(-3px) scale(1.02);} }
+  #character.happy { animation:happyBounce .7s ease-in-out; }
+  @keyframes happyBounce { 0%{transform:translateX(-50%) translateY(0) scale(1);} 30%{transform:translateX(-50%) translateY(-18px) scale(1.06);} 55%{transform:translateX(-50%) translateY(0) scale(1);} 75%{transform:translateX(-50%) translateY(-9px) scale(1.03);} 100%{transform:translateX(-50%) translateY(0) scale(1);} }
+  #character.wrong { animation:shake .6s ease-in-out; }
+  @keyframes shake { 0%,100%{transform:translateX(-50%) rotate(0);} 25%{transform:translateX(-50%) rotate(-4deg);} 75%{transform:translateX(-50%) rotate(4deg);} }
+  #character.thinking { animation:tilt 1.8s ease-in-out infinite; }
+  @keyframes tilt { 0%,100%{transform:translateX(-50%) rotate(0) translateY(0);} 50%{transform:translateX(-50%) rotate(2.5deg) translateY(-3px);} }
+  #locTopBar { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; z-index:6; }
+  #progressDots { display:flex; gap:7px; justify-content:center; padding:12px 0 4px; }
+  .dot2 { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.18); transition:background .2s, transform .2s; }
+  .dot2.done { background:#48bb78; } .dot2.current { background:#fbd38d; transform:scale(1.3); }
+  #exerciseArea {
+    flex:1; padding:16px 16px 24px; display:flex; flex-direction:column;
+    background:linear-gradient(165deg,#4c3f7a 0%,#382f5c 45%,#2d2748 100%);
+    border-radius:26px 26px 0 0; margin-top:-18px; position:relative; z-index:1; box-shadow:0 -8px 24px rgba(0,0,0,.25);
+  }
+  #exPrompt { color:#fff; font-size:16px; font-weight:700; margin-bottom:14px; text-align:center; }
+  #listenBtn {
+    display:flex; align-items:center; gap:6px; margin:0 auto 14px; background:rgba(255,255,255,.14); color:#fff;
+    border:1px solid rgba(255,255,255,.25); padding:10px 18px; border-radius:20px; font-size:13px; cursor:pointer;
+  }
+
+  /* ---- bubble-pop choices ---- */
+  .bubbleRow { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-content:flex-start; padding:6px 0; }
+  .bubble {
+    background:radial-gradient(circle at 30% 25%, #ffffff, #eef1fa 70%); color:#2d3748; border:none; padding:16px 20px;
+    border-radius:40px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.25), inset 0 2px 4px rgba(255,255,255,.6);
+    animation:floaty 3.2s ease-in-out infinite;
+  }
+  .bubbleRow .bubble:nth-child(1){ animation-delay:0s; } .bubbleRow .bubble:nth-child(2){ animation-delay:.4s; } .bubbleRow .bubble:nth-child(3){ animation-delay:.8s; }
+  @keyframes floaty { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
+  .bubble.pop { animation:none !important; transform:scale(1.3); opacity:0; transition:transform .35s ease, opacity .35s ease; box-shadow:0 0 30px 10px rgba(72,187,120,.6); }
+  .bubble.wobble { animation:none !important; }
+  .bubble.wobbling { animation:wobble .4s ease !important; }
+  @keyframes wobble { 0%,100%{transform:rotate(0);} 25%{transform:rotate(-8deg);} 75%{transform:rotate(8deg);} }
+  .bubble[disabled] { pointer-events:none; }
+
+  /* ---- match pairs ---- */
+  .matchGrid { display:flex; gap:12px; justify-content:center; }
+  .matchCol { flex:1; display:flex; flex-direction:column; gap:10px; }
+  .matchCard {
+    background:#fff; color:#2d3748; border:2px solid transparent; border-radius:12px; padding:12px 10px;
+    font-size:13px; font-weight:600; text-align:center; cursor:pointer; box-shadow:0 3px 8px rgba(0,0,0,.2);
+  }
+  .matchCard.selected { border-color:#fbd38d; box-shadow:0 0 0 3px rgba(251,211,141,.5); }
+  .matchCard.matched { background:#c6f6d5; opacity:.55; pointer-events:none; }
+  .matchCard.wrongFlash { animation:shakeCard .4s; border-color:#e53e3e; }
+  @keyframes shakeCard { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-4px);} 75%{transform:translateX(4px);} }
+
+  /* ---- build-a-sentence (tap words in, no dragging) ---- */
+  #buildDisplay {
+    text-align:center; font-size:19px; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.6;
+    letter-spacing:.3px;
+  }
+  #buildDisplay .builtWord {
+    display:inline-block; background:rgba(72,187,120,.25); border:1px solid rgba(72,187,120,.6);
+    border-radius:8px; padding:2px 10px; margin:2px; animation:wordDrop .3s ease;
+  }
+  #buildDisplay .blankWord { display:inline-block; color:rgba(255,255,255,.35); margin:2px 6px; }
+  @keyframes wordDrop { from{ transform:translateY(-10px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+
+  #btnHelp {
+    width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+    background:rgba(255,255,255,.1); color:#fbd38d; border:1px solid rgba(255,255,255,.18);
+    border-radius:14px; padding:14px 16px; margin-top:16px; cursor:pointer;
+  }
+  #btnHelp .bulb { width:20px; height:20px; flex:none; }
+  #btnHelp .fa { font-size:14px; font-weight:700; }
+  #btnHelp .chevron { width:16px; height:16px; flex:none; transition:transform .3s ease; }
+  #btnHelp.open .chevron { transform:rotate(180deg); }
+  #helpInline {
+    overflow:hidden; max-height:0; opacity:0; transform:translateY(-8px);
+    transition:max-height .4s ease, opacity .3s ease, transform .3s ease;
+  }
+  #helpInline.show { max-height:2000px; opacity:1; transform:translateY(0); margin-top:16px; }
+  #helpInline .helpBox {
+    background:rgba(255,255,255,.08); border:1px solid rgba(251,211,141,.25); border-radius:18px; padding:18px 16px;
+  }
+  #helpInline .helpTitle {
+    color:rgba(251,211,141,.7); font-size:12px; letter-spacing:.04em; font-weight:700; margin:0 0 10px; text-align:center;
+  }
+  #helpInline .helpTitle.second { margin-top:18px; }
+  #helpInline .fa.taskFa { color:#fbd38d; font-size:19px; line-height:1.9; direction:rtl; text-align:center; }
+  .bdRow {
+    display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 14px;
+    background:rgba(255,255,255,.06); border-radius:12px; margin-bottom:7px; border:1px solid rgba(255,255,255,.06);
+  }
+  .bdRow .bdEn { color:rgba(255,255,255,.9); font-weight:600; font-size:13px; text-align:left; }
+  .bdRow .arrow { color:rgba(251,211,141,.5); font-size:13px; flex:none; }
+  .bdRow .bdFa { color:#fbd38d; font-size:17px; direction:rtl; text-align:right; }
+
+  /* ---- celebration overlay ---- */
+  #celebrate { position:absolute; top:0; right:0; bottom:0; left:0; pointer-events:none; z-index:20; overflow:hidden; }
+  .confettiBit { position:absolute; top:-10px; border-radius:2px; animation:confFall linear forwards; }
+  @keyframes confFall { to { transform:translateY(720px) rotate(420deg); opacity:.1; } }
+
+  /* ============ REWARD ============ */
+  #screen-reward { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); justify-content:center; align-items:center; padding:24px; }
+  #rewardCard {
+    background:linear-gradient(180deg,#fff 0%,#fdfaf3 100%); border-radius:20px; padding:28px 22px; text-align:center;
+    max-width:320px; border:3px solid gold; box-shadow:0 16px 50px rgba(0,0,0,.35), 0 0 0 1px rgba(212,175,55,.15);
+  }
+  #rewardCard h2 { color:#2d3748; font-size:19px; margin-bottom:10px; }
+  #rewardCard p { color:#4a5568; font-size:13px; line-height:1.6; margin-bottom:14px; }
+  #rewardCard .fa { color:#764ba2; font-size:17px; direction:rtl; margin-bottom:16px; line-height:1.8; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="screen-start" class="screen active">
+    <div id="certificate">
+      <h2>Driver's Certificate - Officially Passed!</h2>
+      <h3>Happy Birthday, Farida!</h3>
+      <p>To Farida - from nervous tests to confident steering. Keep learning, keep smiling.</p>
+      <p class="success">Failed a test? No problem - every great driver had to try again.</p>
+      <div class="persian">تولدت مبارک فریده</div>
+      <div class="nextPart">
+        <p class="newChallenge">This year, a new little adventure begins:</p>
+        <p class="newChallenge" style="color:#764ba2;">Learning English.</p>
+      </div>
+    </div>
+    <button class="bigBtn" id="btnToMap">Start</button>
+  </div>
+
+  <div id="screen-map" class="screen">
+    <div id="mapHeader"><h2>Where to today?</h2><div class="sub">Tap a place on the map</div></div>
+    <div id="mapScroll"><div id="mapWrap"><img src="assets/map.png" alt="Town map"><div id="pins"></div></div></div>
+  </div>
+
+  <div id="screen-driving" class="screen">
+    <div id="drivingUi"><div class="cap" id="driveCap">Driving...</div><button class="pillBtn" id="driveSkip">Skip &#8594;</button></div>
+    <canvas id="driveCanvas"></canvas>
+  </div>
+
+  <div id="screen-location" class="screen">
+    <div id="scene">
+      <div id="locTopBar">
+        <button class="roundBtn" id="btnBackMap">&#8592;</button>
+      </div>
+      <img class="bg" id="locBg" src="" alt="location">
+      <div id="bubbleTxt"></div>
+      <div id="character"><img id="charImg" src=""></div>
+      <div id="celebrate"></div>
+    </div>
+    <div id="exerciseArea">
+      <div id="progressDots"></div>
+      <div id="exPrompt"></div>
+      <button id="listenBtn" style="display:none;">&#128264; Listen again</button>
+      <div class="bubbleRow" id="bubbleRow" style="display:none;"></div>
+      <div class="matchGrid" id="matchGrid" style="display:none;"></div>
+      <div id="buildDisplay" style="display:none;"></div>
+      <div class="bubbleRow" id="buildRow" style="display:none;"></div>
+      <button id="btnHelp">
+        <svg class="bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3Z"/></svg>
+        <span class="fa">نیاز به راهنمایی دارم</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="helpInline">
+        <div class="helpBox">
+          <div class="helpTitle fa">توضیح تمرین</div>
+          <div class="fa taskFa" id="helpTaskFa"></div>
+          <div class="helpTitle second fa" id="helpBdTitle">کلمه به کلمه</div>
+          <div id="helpBreakdown"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-reward" class="screen">
+    <div id="rewardCard">
+      <h2>Great job!</h2>
+      <p id="rewardBody"></p>
+      <div class="fa" id="rewardFa"></div>
+      <button class="bigBtn" id="btnRewardMap" style="padding:10px 26px;font-size:14px;">Back to map</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CHAR_BASE = 'assets/characters/'; // each location has its own subfolder: supermarket/, pharmacy/, cafe/
+const ICONS = {
+  cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>',
+  cross: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="9.5" y="3" width="5" height="18" rx="1.6"/><rect x="3" y="9.5" width="18" height="5" rx="1.6"/></svg>',
+  cup: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9.5h1.5a2.5 2.5 0 0 1 0 5H17"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>',
+};
+
+const LOCATIONS = [
+  { id:'cafe', name:'Cafe', cat:'amber', icon:'cup', xPct:58, yPct:8, bg:'assets/cafe.png' },
+  { id:'pharmacy', name:'Pharmacy', cat:'red', icon:'cross', xPct:79, yPct:35, bg:'assets/pharmacy.png' },
+  { id:'supermarket', name:'Supermarket', cat:'green', icon:'cart', xPct:30, yPct:51, bg:'assets/supermarket.png' },
+];
+
+/* Exercise kinds: bubble (pop the right choice), match (connect pairs), drag (build the sentence), listen (bubble + audio) */
+const STAGES = {
+  supermarket: [
+    { type:'build', words:['Where','is','the','milk?'], prompt:'Build the question, one word at a time',
+      persianEn:'Tap the words in order to ask where the milk is.', persianFa:'کلمات را به ترتیب لمس کن تا بپرسی شیر کجاست.',
+      breakdown:[['Where','کجا'],['milk','شیر'],['Where is the milk?','شیر کجاست؟']] },
+    { type:'match', prompt:'Match each sentence to its meaning',
+      persianEn:'Tap an English sentence, then tap its matching meaning.', persianFa:'یک جمله انگلیسی را لمس کن، سپس معنی درست آن را لمس کن.',
+      pairs:[
+        {a:'How much is this?', b:'این چند است؟'},
+        {a:'I want yogurt, please.', b:'من ماست می‌خواهم، لطفاً.'},
+        {a:'Where is the milk?', b:'شیر کجاست؟'},
+      ] },
+    { type:'bubble', prompt:'How do you ask the price?', persianEn:'Which sentence asks the price?', persianFa:'کدام جمله قیمت را می‌پرسد؟',
+      options:['How much is this?','What time is it?','Where do you live?'], correct:0,
+      breakdown:[['How much','چند'],['this','این'],['How much is this?','این چند است؟']] },
+    { type:'listen', spoken:'How much is this?', prompt:'Listen, then pop what you hear.', persianEn:'Listen, then choose what you hear.', persianFa:'گوش کن و جمله‌ای را که می‌شنوی انتخاب کن.',
+      options:['How much is this?','What time is it?','Where is the exit?'], correct:0,
+      breakdown:[['How much','چند'],['this','این'],['How much is this?','این چند است؟']] },
+  ],
+  pharmacy: [
+    { type:'bubble', prompt:'What do you say for a headache?', persianEn:'What do you say if you have a headache?', persianFa:'اگر سردرد داری چه می‌گویی؟',
+      options:['I have a headache.','I have a car.','I have a cat.'], correct:0,
+      breakdown:[['I have','دارم'],['a headache','سردرد'],['I have a headache.','من سردرد دارم.']] },
+    { type:'build', words:['Do','you','have','a','prescription?'], prompt:'Build the question, one word at a time',
+      persianEn:'Tap the words in order.', persianFa:'کلمات را به ترتیب لمس کن.',
+      breakdown:[['Do you have','داری'],['a prescription','نسخه'],['Do you have a prescription?','نسخه داری؟']] },
+    { type:'match', prompt:'Match each sentence to its meaning',
+      persianEn:'Tap an English sentence, then tap its matching meaning.', persianFa:'یک جمله انگلیسی را لمس کن، سپس معنی درست آن را لمس کن.',
+      pairs:[
+        {a:'I have a headache.', b:'سردرد دارم.'},
+        {a:'How much is this medicine?', b:'این دوا چند است؟'},
+        {a:'Do you have a prescription?', b:'نسخه داری؟'},
+      ] },
+    { type:'listen', spoken:'I need some medicine, please.', prompt:'Listen, then pop what you hear.', persianEn:'Listen, then choose what you hear.', persianFa:'گوش کن و جمله‌ای را که می‌شنوی انتخاب کن.',
+      options:['I need some medicine, please.','I need a taxi, please.','I need a room, please.'], correct:0,
+      breakdown:[['I need','می‌خواهم'],['some medicine','دوا'],['I need some medicine, please.','من دوا می‌خواهم، لطفاً.']] },
+  ],
+  cafe: [
+    { type:'build', words:['Can','I','have','a','coffee?'], prompt:'Build the question, one word at a time',
+      persianEn:'Tap the words in order to ask for a coffee.', persianFa:'کلمات را به ترتیب لمس کن تا قهوه بخواهی.',
+      breakdown:[['Can I have','می‌توانم داشته باشم'],['a coffee','یک قهوه'],['Can I have a coffee?','می‌توانم یک قهوه داشته باشم؟']] },
+    { type:'match', prompt:'Match each sentence to its meaning',
+      persianEn:'Tap an English sentence, then tap its matching meaning.', persianFa:'یک جمله انگلیسی را لمس کن، سپس معنی درست آن را لمس کن.',
+      pairs:[
+        {a:'Can I have a coffee?', b:'می‌توانم یک قهوه داشته باشم؟'},
+        {a:'How much is a cup of tea?', b:'یک پیاله چای چند است؟'},
+        {a:'Is this seat free?', b:'این چوکی خالی است؟'},
+      ] },
+    { type:'bubble', prompt:'How do you ask for the bill?', persianEn:'Which sentence asks for the bill?', persianFa:'کدام جمله صورت‌حساب را می‌پرسد؟',
+      options:['Can I have the bill, please?','Where is the bathroom?','What is your name?'], correct:0,
+      breakdown:[['Can I have','می‌توانم داشته باشم'],['the bill','صورت‌حساب'],['Can I have the bill, please?','می‌توانم صورت‌حساب را داشته باشم، لطفاً؟']] },
+    { type:'listen', spoken:"I'd like a cup of tea.", prompt:'Listen, then pop what you hear.', persianEn:'Listen, then choose what you hear.', persianFa:'گوش کن و جمله‌ای را که می‌شنوی انتخاب کن.',
+      options:["I'd like a cup of tea.","I'd like to go home.","I'd like a table for two."], correct:0,
+      breakdown:[["I'd like",'می‌خواهم'],['a cup of tea','یک پیاله چای'],["I'd like a cup of tea.",'یک پیاله چای می‌خواهم.']] },
+  ],
+};
+
+const progress = JSON.parse(localStorage.getItem('faridaEnglishProgress') || '{}');
+function saveProgress(){ localStorage.setItem('faridaEnglishProgress', JSON.stringify(progress)); }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+document.getElementById('btnToMap').onclick = () => { showScreen('screen-map'); renderMap(); };
+
+/* ---------------- SOUND EFFECTS ---------------- */
+let audioCtx = null;
+function getAudioCtx(){ if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+function tone(freq, start, dur, type, gainPeak){
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator(); const gain = ctx.createGain();
+  osc.type = type || 'sine'; osc.frequency.value = freq;
+  osc.connect(gain); gain.connect(ctx.destination);
+  const t0 = ctx.currentTime + start;
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.exponentialRampToValueAtTime(gainPeak || 0.22, t0 + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.start(t0); osc.stop(t0 + dur + 0.02);
+}
+function playClick(){ try { tone(720,0,0.07,'sine',0.12); } catch(e){} }
+function playPop(){ try { tone(880,0,0.08,'sine',0.18); tone(1200,0.05,0.1,'sine',0.12); } catch(e){} }
+function playCorrect(){ try { tone(523,0,0.12,'sine'); tone(659,0.08,0.12,'sine'); tone(784,0.16,0.2,'sine'); } catch(e){} }
+function playWrong(){ try { tone(180,0,0.22,'sawtooth',0.15); } catch(e){} }
+function playWhoosh(){ try { tone(300,0,0.1,'sine',0.08); } catch(e){} }
+document.addEventListener('click', (e) => { if (e.target.closest('button, .pin, .bubble, .matchCard')) playClick(); }, true);
+
+let cachedVoices = [];
+function loadVoices(){ cachedVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if ('speechSynthesis' in window) { loadVoices(); window.speechSynthesis.onvoiceschanged = loadVoices; }
+function pickVoice(langPrefix){
+  if (!cachedVoices.length) return null;
+  const candidates = cachedVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith(langPrefix));
+  if (!candidates.length) return null;
+  return candidates.sort((a,b) => { const score = v => /natural|enhanced|premium|neural/i.test(v.name) ? 2 : (v.localService?0:1); return score(b)-score(a); })[0];
+}
+function speakText(text, langPrefix, lang){
+  try {
+    if (!('speechSynthesis' in window)) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang; u.rate = 0.92;
+    const v = pickVoice(langPrefix); if (v) u.voice = v;
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+
+/* ---------------- MAP ---------------- */
+function renderMap(){
+  const wrap = document.getElementById('pins'); wrap.innerHTML = '';
+  LOCATIONS.forEach(loc => {
+    const done = progress[loc.id] === 'done';
+    const pin = document.createElement('div');
+    pin.className = 'pin cat-' + loc.cat + (loc.locked ? ' locked' : '') + (done ? ' done' : '');
+    pin.style.left = loc.xPct + '%'; pin.style.top = loc.yPct + '%';
+    pin.innerHTML = `<div class="dot">${loc.locked ? ICONS.lock : (done ? ICONS.check : ICONS[loc.icon])}</div>
+      <div class="label">${loc.locked ? loc.name + ' (soon)' : loc.name}</div>`;
+    if (!loc.locked) pin.onclick = () => startDriving(loc.id);
+    wrap.appendChild(pin);
+  });
+}
+
+/* ---------------- DRIVING CUTSCENE ---------------- */
+let driveCtx, driveCanvas, driveLaneW, driveH, driveAnim, driveTimer, driveStart;
+const DRIVE_MS = 1900;
+function startDriving(locId){
+  document.getElementById('driveCap').textContent = 'Driving to the ' + LOCATIONS.find(l=>l.id===locId).name + '...';
+  showScreen('screen-driving');
+  driveCanvas = document.getElementById('driveCanvas');
+  driveCtx = driveCanvas.getContext('2d');
+  const rect = driveCanvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  driveCanvas.width = rect.width*dpr; driveCanvas.height = rect.height*dpr;
+  driveCtx.scale(dpr,dpr);
+  driveLaneW = rect.width/3; driveH = rect.height;
+  driveStart = performance.now();
+  driveLoop();
+  clearTimeout(driveTimer);
+  driveTimer = setTimeout(()=>finishDriving(locId), DRIVE_MS);
+  document.getElementById('driveSkip').onclick = () => { clearTimeout(driveTimer); finishDriving(locId); };
+}
+function easeInOut(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+function driveLoop(){
+  const rect = driveCanvas.getBoundingClientRect();
+  const elapsed = performance.now() - driveStart;
+  const t = Math.min(1, elapsed / DRIVE_MS);
+  driveCtx.clearRect(0,0,rect.width,rect.height);
+  driveCtx.fillStyle = '#1a202c'; driveCtx.fillRect(0,0,rect.width,driveH);
+  driveCtx.strokeStyle = '#fff'; driveCtx.lineWidth = 2; driveCtx.setLineDash([20,20]);
+  for (let i=1;i<3;i++){ driveCtx.beginPath(); driveCtx.moveTo(i*driveLaneW,0); driveCtx.lineTo(i*driveLaneW,driveH); driveCtx.stroke(); }
+  driveCtx.setLineDash([]);
+  const px = driveLaneW*1.5;
+  const py = (driveH + 90) - easeInOut(t) * (driveH + 180);
+  driveCtx.fillStyle = '#e53e3e'; driveCtx.fillRect(px-17.5,py,35,50);
+  driveCtx.fillStyle = '#feb2b2'; driveCtx.fillRect(px-12.5,py+5,25,15);
+  driveCtx.fillStyle = '#1a202c';
+  driveCtx.fillRect(px-20.5,py+8,6,10); driveCtx.fillRect(px+14.5,py+8,6,10);
+  driveCtx.fillRect(px-20.5,py+30,6,10); driveCtx.fillRect(px+14.5,py+30,6,10);
+  if (t < 1) driveAnim = requestAnimationFrame(driveLoop);
+}
+function finishDriving(locId){ cancelAnimationFrame(driveAnim); startLocation(locId); }
+
+/* ---------------- LOCATION / EXERCISES ---------------- */
+let curLoc, curStages, curIndex;
+function startLocation(locId){
+  curLoc = LOCATIONS.find(l=>l.id===locId);
+  curStages = STAGES[locId] || [];
+  curIndex = 0;
+  document.getElementById('locBg').src = curLoc.bg;
+  showScreen('screen-location');
+  renderStage();
+}
+document.getElementById('btnBackMap').onclick = () => { showScreen('screen-map'); renderMap(); };
+
+function renderDots(){
+  const wrap = document.getElementById('progressDots'); wrap.innerHTML = '';
+  curStages.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'dot2' + (i<curIndex?' done':(i===curIndex?' current':''));
+    wrap.appendChild(d);
+  });
+}
+function setCharacter(state){
+  const character = document.getElementById('character');
+  character.classList.remove('talking','happy','wrong','thinking');
+  const map = { idle:'neutral', talking:'talking', thinking:'thinking', happy:'correct_goodjob', wrong:'wrong_upset' };
+  const key = map[state] || 'neutral';
+  document.getElementById('charImg').src = CHAR_BASE + curLoc.id + '/' + key + '.png';
+  if (state!=='idle') character.classList.add(state==='happy'?'happy':(state==='wrong'?'wrong':state));
+}
+function resetExerciseUI(){
+  ['bubbleRow','matchGrid','buildDisplay','buildRow'].forEach(id=>{
+    const el = document.getElementById(id); el.innerHTML=''; el.style.display='none';
+  });
+  document.getElementById('listenBtn').style.display = 'none';
+  document.getElementById('helpInline').classList.remove('show');
+  document.getElementById('btnHelp').classList.remove('open');
+}
+function renderStage(){
+  renderDots(); resetExerciseUI();
+  const stage = curStages[curIndex];
+  document.getElementById('bubbleTxt').textContent = stage.prompt;
+  document.getElementById('exPrompt').textContent = stage.prompt;
+  setCharacter('talking');
+  if (stage.type === 'bubble' || stage.type === 'listen') renderBubbleStage(stage);
+  if (stage.type === 'match') renderMatchStage(stage);
+  if (stage.type === 'build') renderBuildStage(stage);
+  if (stage.type === 'listen') {
+    document.getElementById('listenBtn').style.display = 'flex';
+    document.getElementById('listenBtn').onclick = () => speakText(stage.spoken, 'en', 'en-US');
+    setTimeout(()=>speakText(stage.spoken, 'en', 'en-US'), 400);
+  }
+}
+
+/* ---- bubble-pop ---- */
+function renderBubbleStage(stage){
+  const row = document.getElementById('bubbleRow');
+  row.style.display = 'flex';
+  stage.options.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className = 'bubble'; b.textContent = opt;
+    b.onclick = () => {
+      if (i === stage.correct) {
+        playPop();
+        document.querySelectorAll('.bubble').forEach(x=>x.setAttribute('disabled','true'));
+        b.classList.add('pop');
+        handleCorrectDirect(true);
+      } else {
+        playWrong();
+        b.classList.add('wobbling');
+        setCharacter('wrong');
+        document.getElementById('bubbleTxt').textContent = 'Not quite - try again.';
+        setTimeout(()=>{ b.classList.remove('wobbling'); setCharacter('talking'); }, 500);
+      }
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ---- match pairs ---- */
+function renderMatchStage(stage){
+  const grid = document.getElementById('matchGrid');
+  grid.style.display = 'flex';
+  const colA = document.createElement('div'); colA.className = 'matchCol';
+  const colB = document.createElement('div'); colB.className = 'matchCol';
+  const order = stage.pairs.map((_,i)=>i);
+  const shuffledA = [...order].sort(()=>Math.random()-0.5);
+  const shuffledB = [...order].sort(()=>Math.random()-0.5);
+  let matchedCount = 0, selA = null, selB = null;
+  shuffledA.forEach(i=>{
+    const c = document.createElement('div'); c.className='matchCard'; c.textContent = stage.pairs[i].a; c.dataset.pair = i;
+    c.onclick = () => {
+      if (c.classList.contains('matched')) return;
+      document.querySelectorAll('#matchGrid .matchCol:first-child .matchCard').forEach(x=>x.classList.remove('selected'));
+      c.classList.add('selected'); selA = c;
+      tryMatch();
+    };
+    colA.appendChild(c);
+  });
+  shuffledB.forEach(i=>{
+    const c = document.createElement('div'); c.className='matchCard fa'; c.textContent = stage.pairs[i].b; c.dataset.pair = i;
+    c.onclick = () => {
+      if (c.classList.contains('matched')) return;
+      document.querySelectorAll('#matchGrid .matchCol:last-child .matchCard').forEach(x=>x.classList.remove('selected'));
+      c.classList.add('selected'); selB = c;
+      tryMatch();
+    };
+    colB.appendChild(c);
+  });
+  grid.innerHTML = ''; grid.appendChild(colA); grid.appendChild(colB);
+  function tryMatch(){
+    if (!selA || !selB) return;
+    if (selA.dataset.pair === selB.dataset.pair) {
+      playPop();
+      selA.classList.remove('selected'); selB.classList.remove('selected');
+      selA.classList.add('matched'); selB.classList.add('matched');
+      matchedCount++;
+      selA = null; selB = null;
+      if (matchedCount === stage.pairs.length) handleCorrectDirect(true);
+    } else {
+      playWrong();
+      selA.classList.add('wrongFlash'); selB.classList.add('wrongFlash');
+      setCharacter('wrong');
+      const a = selA, b = selB;
+      setTimeout(()=>{
+        a.classList.remove('selected','wrongFlash'); b.classList.remove('selected','wrongFlash');
+        setCharacter('talking');
+      }, 450);
+      selA = null; selB = null;
+    }
+  }
+}
+
+/* ---- build-a-sentence: all word bubbles visible at once, tap them in the right order (no dragging, no hidden steps) ---- */
+function renderBuildStage(stage){
+  const display = document.getElementById('buildDisplay');
+  const row = document.getElementById('buildRow');
+  display.style.display = 'block';
+  row.style.display = 'flex';
+  let built = [];
+  const pool = [...stage.words].sort(()=>Math.random()-0.5);
+  display.innerHTML = stage.words.map(()=>`<span class="blankWord">____</span>`).join(' ');
+  row.innerHTML = '';
+  pool.forEach(word=>{
+    const b = document.createElement('button');
+    b.className = 'bubble'; b.textContent = word;
+    b.onclick = () => {
+      const nextWord = stage.words[built.length];
+      if (word === nextWord) {
+        playPop();
+        b.setAttribute('disabled','true');
+        b.classList.add('pop');
+        built.push(word);
+        display.innerHTML = stage.words.map((w,i)=> i < built.length
+          ? `<span class="builtWord">${built[i]}</span>`
+          : `<span class="blankWord">____</span>`).join(' ');
+        if (built.length === stage.words.length) handleCorrectDirect(true);
+      } else {
+        playWrong();
+        b.classList.add('wobbling');
+        setCharacter('wrong');
+        document.getElementById('bubbleTxt').textContent = 'Not quite - try again.';
+        setTimeout(()=>{ b.classList.remove('wobbling'); setCharacter('talking'); }, 500);
+      }
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ---- celebration burst on finishing a location ---- */
+function celebrate(){
+  const wrap = document.getElementById('celebrate');
+  const colors = ['#fbd38d','#48bb78','#f687b3','#fff','#9f7aea'];
+  for (let i=0;i<22;i++){
+    const d = document.createElement('div'); d.className='confettiBit';
+    const size = 6+Math.random()*5;
+    d.style.width=size+'px'; d.style.height=size+'px';
+    d.style.left=(Math.random()*100)+'%';
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(1.6+Math.random()*1.2)+'s';
+    d.style.animationDelay=(Math.random()*0.3)+'s';
+    wrap.appendChild(d);
+  }
+  setTimeout(()=>{ wrap.innerHTML=''; }, 3200);
+}
+
+function handleCorrectDirect(skipVisual){
+  playCorrect();
+  setCharacter('happy');
+  document.getElementById('bubbleTxt').textContent = "That's right! Well done.";
+  setTimeout(()=>{
+    curIndex++;
+    if (curIndex >= curStages.length) finishLocation();
+    else renderStage();
+  }, skipVisual ? 700 : 900);
+}
+
+document.getElementById('btnHelp').onclick = () => {
+  const btn = document.getElementById('btnHelp');
+  const inline = document.getElementById('helpInline');
+  const opening = !btn.classList.contains('open');
+  if (opening) {
+    const stage = curStages[curIndex];
+    document.getElementById('helpTaskFa').textContent = stage.persianFa || '';
+    const bd = document.getElementById('helpBreakdown');
+    bd.innerHTML = '';
+    const rows = stage.breakdown || (stage.pairs ? stage.pairs.map(p=>[p.a,p.b]) : []);
+    const bdTitle = document.getElementById('helpBdTitle');
+    bdTitle.style.display = rows.length ? 'block' : 'none';
+    rows.forEach(([en,fa])=>{
+      const row = document.createElement('div'); row.className = 'bdRow';
+      row.innerHTML = `<span class="bdEn">${en}</span><span class="arrow">&#8592;</span><span class="bdFa fa">${fa}</span>`;
+      bd.appendChild(row);
+    });
+    btn.classList.add('open');
+    inline.classList.add('show');
+    if (stage.persianFa) speakText(stage.persianFa, 'fa', 'fa-AF');
+  } else {
+    btn.classList.remove('open');
+    inline.classList.remove('show');
+  }
+};
+
+const DARI_COMPLETION_LINES = [
+  'آفرین! امروز خیلی خوب یاد گرفتی.',
+  'عالی بود! هر روز بهتر می‌شوی.',
+  'خیلی خوب کار کردی، همینطور پیش برو.',
+  'بسیار خوب! یک قدم دیگر به پیش رفتی.',
+];
+function finishLocation(){
+  progress[curLoc.id] = 'done';
+  saveProgress();
+  celebrate();
+  document.getElementById('rewardBody').textContent = `You finished all the exercises at the ${curLoc.name}!`;
+  const line = DARI_COMPLETION_LINES[Math.floor(Math.random()*DARI_COMPLETION_LINES.length)];
+  document.getElementById('rewardFa').textContent = line;
+  speakText(line, 'fa', 'fa-AF');
+  setTimeout(()=>showScreen('screen-reward'), 650);
+}
+document.getElementById('btnRewardMap').onclick = () => { showScreen('screen-map'); renderMap(); };
+</script>
+</body>
+</html>
