@@ -6,7 +6,7 @@
 <title>Farida's English Challenge - Happy Birthday!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
   body {
@@ -195,6 +195,130 @@
   #rewardCard h2 { color:#2d3748; font-size:19px; margin-bottom:10px; }
   #rewardCard p { color:#4a5568; font-size:13px; line-height:1.6; margin-bottom:14px; }
   #rewardCard .fa { color:#764ba2; font-size:17px; direction:rtl; margin-bottom:16px; line-height:1.8; }
+
+/* ====== v2 glow-up: golden-hour palette matching the map art ====== */
+:root{ --honey:#f6c453; --leaf:#6aa84f; --cream:#fff6e5; --bark:#4a3326; --rose:#e86a6a; --dusk:#3a2b45; --dusk2:#2b2036; }
+body{ font-family:'Fredoka','Segoe UI',sans-serif; background:radial-gradient(circle at 30% 20%,#f9d77e 0%,#e8896a 45%,#6b3f6e 100%); }
+#app{ background:var(--dusk2); border-radius:0; }
+@media(min-width:460px){ #app{ border-radius:28px; } }
+.fa,.persian{ font-family:'Vazirmatn','Tahoma',sans-serif; }
+
+.drift{ position:absolute; bottom:-40px; pointer-events:none; z-index:0; animation:driftUp linear infinite; opacity:0; }
+@keyframes driftUp{ 0%{transform:translateY(0) translateX(0) rotate(0);opacity:0;} 10%{opacity:.9;} 50%{transform:translateY(-45vh) translateX(18px) rotate(12deg);} 90%{opacity:.8;} 100%{transform:translateY(-105vh) translateX(-14px) rotate(-10deg);opacity:0;} }
+
+#screen-start{ background:linear-gradient(170deg,#ffd98a 0%,#f4a261 45%,#b5527a 100%); }
+#certificate{ position:relative; background:linear-gradient(180deg,#fffdf7,#fff1d6); border:4px solid #e0a928; border-radius:26px; z-index:2;
+  box-shadow:0 18px 50px rgba(74,51,38,.4), inset 0 0 0 5px #fff6e5, inset 0 0 0 7px rgba(224,169,40,.55); animation:certIn .9s cubic-bezier(.2,1.3,.4,1) both; }
+@keyframes certIn{ from{opacity:0;transform:translateY(40px) rotate(-3deg) scale(.9);} to{opacity:1;transform:none;} }
+#certificate::before,#certificate::after{ font-size:40px; top:-24px; animation:wiggle 2.4s ease-in-out infinite; }
+#certificate::after{ animation-delay:.6s; }
+@keyframes wiggle{ 0%,100%{transform:rotate(-10deg) scale(1);} 50%{transform:rotate(10deg) scale(1.15);} }
+#certificate h2{ color:var(--bark); font-weight:600; }
+#certificate h3{ color:var(--rose); font-size:26px; background:linear-gradient(90deg,#e86a6a,#f09a3e,#e86a6a); background-size:200%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 3s linear infinite; }
+@keyframes shine{ to{background-position:200% 0;} }
+#certificate p{ color:#6b5444; } #certificate .persian{ color:#b5527a; font-size:22px; }
+.bigBtn{ position:relative; z-index:2; background:linear-gradient(180deg,#ffd35c,#f2a81d); color:var(--bark); font-family:'Fredoka',sans-serif; font-size:18px; font-weight:600;
+  box-shadow:0 6px 0 #b87a0c,0 12px 20px rgba(0,0,0,.25); animation:btnPulse 1.8s ease-in-out infinite; }
+.bigBtn:active{ box-shadow:0 2px 0 #b87a0c; transform:translateY(4px) scale(.98); }
+@keyframes btnPulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
+
+#mapHeader{ background:linear-gradient(180deg,#5a3d4f,#3a2b45); border-bottom:3px solid var(--honey); }
+#mapHeader h2{ font-size:19px; font-weight:600; color:var(--cream); }
+#mapWrap::after{ content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 40%,rgba(255,220,140,.12),rgba(60,30,60,.25)); }
+.pin{ z-index:3; }
+.pin .dot{ width:54px; height:54px; border:4px solid #fff6e5; animation:pinBob 1.8s ease-in-out infinite, pinPulse 2.4s ease-in-out infinite; }
+.pin .dot svg{ width:26px; height:26px; }
+@keyframes pinBob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);} }
+.pin .label{ background:var(--cream); color:var(--bark); font-size:13px; font-weight:600; padding:4px 12px; border-radius:14px; box-shadow:0 3px 8px rgba(0,0,0,.3); }
+.pin.done .dot{ animation:none; }
+.firefly{ position:absolute; width:7px; height:7px; border-radius:50%; background:#fff3a8; box-shadow:0 0 10px 4px rgba(255,236,130,.8); pointer-events:none; z-index:2; animation:fly 7s ease-in-out infinite; }
+@keyframes fly{ 0%,100%{transform:translate(0,0);opacity:.2;} 25%{transform:translate(24px,-18px);opacity:1;} 50%{transform:translate(-10px,-34px);opacity:.4;} 75%{transform:translate(18px,-12px);opacity:1;} }
+
+#drivingUi{ background:linear-gradient(180deg,#5a3d4f,#3a2b45); }
+#drivingUi .cap{ color:var(--honey); font-size:16px; font-weight:600; }
+
+#screen-location{ background:var(--dusk2); }
+#scene::after{ background:linear-gradient(180deg,rgba(255,200,120,.12) 0%,rgba(0,0,0,0) 40%,rgba(43,32,54,.55) 100%); }
+#bubbleTxt{ background:var(--cream); font-family:'Fredoka',sans-serif; font-size:15px; font-weight:500; border-radius:20px; padding:10px 18px; animation:bubbleIn .35s cubic-bezier(.2,1.4,.4,1); }
+#bubbleTxt::after{ content:''; position:absolute; bottom:-9px; left:50%; margin-left:-9px; border:9px solid transparent; border-top-color:var(--cream); border-bottom:0; }
+@keyframes bubbleIn{ from{transform:translateX(-50%) scale(.7);opacity:0;} to{transform:translateX(-50%) scale(1);opacity:1;} }
+#character{ animation:charIn .6s cubic-bezier(.2,1.3,.4,1) both, bob 2.6s ease-in-out .6s infinite; }
+@keyframes charIn{ from{transform:translateX(-50%) translateY(60px) scale(.8);opacity:0;} to{transform:translateX(-50%) translateY(0) scale(1);opacity:1;} }
+#character.talking,#character.happy,#character.wrong,#character.thinking{ animation-delay:0s; }
+.starBit{ position:absolute; pointer-events:none; z-index:15; font-size:22px; animation:starFly .9s ease-out forwards; }
+@keyframes starFly{ 0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1;} 100%{transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--rot));opacity:0;} }
+
+#exerciseArea{ background:linear-gradient(165deg,#5a3d6e 0%,#43304f 50%,#2f2339 100%); border-top:3px solid rgba(246,196,83,.5); }
+#exPrompt{ font-size:19px; font-weight:600; color:var(--cream); }
+.dot2{ width:11px; height:11px; } .dot2.done{ background:var(--leaf); box-shadow:0 0 8px var(--leaf); } .dot2.current{ background:var(--honey); box-shadow:0 0 10px var(--honey); }
+.bubble{ font-family:'Fredoka',sans-serif; font-size:16px; font-weight:600; color:var(--bark);
+  background:radial-gradient(circle at 28% 22%,#fff 0%,#ffeed0 55%,#ffd88a 100%); border:2px solid rgba(255,255,255,.7);
+  box-shadow:0 6px 0 rgba(120,70,20,.35),0 10px 18px rgba(0,0,0,.25); padding:16px 22px; }
+.bubble:active{ box-shadow:0 2px 0 rgba(120,70,20,.35); }
+.bubbleRow .bubble:nth-child(4){ animation-delay:1.1s; } .bubbleRow .bubble:nth-child(5){ animation-delay:1.5s; }
+.matchCard{ font-family:'Fredoka','Vazirmatn',sans-serif; font-size:14px; background:var(--cream); border-radius:16px; box-shadow:0 4px 0 rgba(120,70,20,.3); }
+.matchCard.fa{ font-family:'Vazirmatn',sans-serif; }
+.matchCard.matched{ background:#b9e6a0; animation:matchedPop .4s ease; }
+@keyframes matchedPop{ 50%{transform:scale(1.1);} }
+#buildDisplay{ font-size:22px; } #buildDisplay .builtWord{ background:rgba(246,196,83,.25); border-color:var(--honey); }
+#btnHelp{ border-radius:18px; } 
+
+#screen-reward{ background:linear-gradient(170deg,#ffd98a,#f4a261 45%,#b5527a); }
+#rewardCard{ background:linear-gradient(180deg,#fffdf7,#fff1d6); border:4px solid #e0a928; border-radius:26px; box-shadow:0 18px 50px rgba(74,51,38,.4), inset 0 0 0 5px #fff6e5; position:relative; }
+.screen.active #rewardCard{ animation:certIn .8s cubic-bezier(.2,1.3,.4,1) both; }
+#rewardCard::before{ content:'\2B50'; display:block; font-size:56px; margin-bottom:6px; animation:spinStar 3s ease-in-out infinite; }
+@keyframes spinStar{ 0%,100%{transform:rotate(-12deg) scale(1);} 50%{transform:rotate(12deg) scale(1.2);} }
+#rewardCard h2{ font-size:26px; color:var(--bark); } #rewardCard .fa{ color:#b5527a; font-size:19px; }
+.confettiBit{ animation-name:confFall; } 
+@keyframes confFall{ 0%{transform:translateY(0) translateX(0) rotate(0);} 50%{transform:translateY(340px) translateX(24px) rotate(300deg);} 100%{transform:translateY(720px) translateX(-16px) rotate(640deg);opacity:.1;} }
+@media (prefers-reduced-motion:reduce){ *{animation-duration:.01ms !important;animation-iteration-count:1 !important;} }
+
+
+/* ====== v3 fixes + extras ====== */
+/* fix 1: the map wrapper had line-height:0 (for the image), which squashed the labels */
+.pin .label{ line-height:1.25; padding:6px 14px; font-size:14px; }
+/* fix 2: floating decorations live in their own clipped layer, so they can never create scrollbars */
+.driftLayer{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+#screen-start, #screen-reward{ overflow-x:hidden; scrollbar-width:none; }
+#screen-start::-webkit-scrollbar, #screen-reward::-webkit-scrollbar, #screen-location::-webkit-scrollbar{ display:none; }
+#screen-location{ scrollbar-width:none; }
+#screen-start{ overflow-y:auto; }
+#certificate{ margin:28px 0 0; }
+
+/* extras: star counter, sparkling finished pins, tap ripples */
+#mapHeader{ position:relative; }
+#starCount{ position:absolute; right:14px; top:50%; transform:translateY(-50%); background:rgba(255,246,229,.16); color:var(--honey);
+  font-weight:600; font-size:15px; padding:5px 12px; border-radius:16px; border:1px solid rgba(246,196,83,.5); line-height:1.2; }
+#starCount.bump{ animation:matchedPop .5s ease; }
+@keyframes flap{ 50%{transform:scaleY(.4);} }
+.pin.done .dot::after{ content:'\2728'; position:absolute; top:-12px; right:-12px; font-size:20px; line-height:1; animation:wiggle 2s ease-in-out infinite; }
+.pin .dot{ position:relative; }
+.cloud{ position:absolute; z-index:1; pointer-events:none; width:150px; height:60px; border-radius:50%; background:rgba(40,30,60,.14); filter:blur(14px); animation:cloudMove linear infinite; }
+@keyframes cloudMove{ from{transform:translateX(-200px);} to{transform:translateX(620px);} }
+.ripple{ position:absolute; z-index:30; width:16px; height:16px; margin:-8px 0 0 -8px; border-radius:50%; border:3px solid rgba(255,246,229,.9); pointer-events:none; animation:rip .6s ease-out forwards; }
+@keyframes rip{ to{ transform:scale(5); opacity:0; } }
+
+/* ===== finale: certificate ===== */
+#screen-finale{background:linear-gradient(170deg,#ffd98a,#f4a261 45%,#b5527a);justify-content:flex-start;align-items:center;padding:26px 20px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+#screen-finale::-webkit-scrollbar{display:none}
+.finCert{position:relative;z-index:2;background:linear-gradient(180deg,#fff,#fdf6e3);border:3px solid gold;border-radius:22px;padding:24px 20px 22px;max-width:340px;width:100%;text-align:center;box-shadow:0 16px 50px rgba(0,0,0,.35);margin:auto 0}
+.seal{font-size:56px;line-height:1.1;animation:sealPop 1s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes sealPop{from{transform:scale(0) rotate(-200deg)}to{transform:scale(1) rotate(0)}}
+.finKicker{color:#b5527a;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+.finCert h2{font-size:36px;color:var(--bark);margin:2px 0 4px}
+.stars3 span{font-size:30px;display:inline-block;animation:starIn .6s both}
+.stars3 span:nth-child(1){animation-delay:.6s}.stars3 span:nth-child(2){animation-delay:1s}.stars3 span:nth-child(3){animation-delay:1.4s}
+@keyframes starIn{from{transform:scale(0) rotate(-90deg);opacity:0}to{transform:scale(1);opacity:1}}
+.finCert p{color:#4a5568;font-size:14px;line-height:1.6;margin:8px 0}
+.finCert p.praise{color:#b5527a;font-weight:600}
+.finCert .fa{direction:rtl;color:#764ba2;font-size:16px;line-height:1.9;margin:8px 0}
+.finOffer{margin-top:12px;padding:10px;border-radius:14px;background:rgba(232,106,138,.12);border:1px dashed #e86a8a;font-size:13px;color:var(--bark);line-height:1.6}
+.finDate{font-size:11px;color:#a0aec0;margin-top:10px}
+.finBtns{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.finBtns .bigBtn{margin-top:0;padding:12px 22px;font-size:16px}
+.bigBtn.yes{background:#e86a8a;color:#fff;animation:matchedPop 1.4s ease-in-out infinite}
+.rainBit{position:absolute;top:-40px;z-index:5;pointer-events:none;animation:rainDown linear forwards}
+@keyframes rainDown{to{transform:translateY(900px) rotate(360deg);opacity:.2}}
 </style>
 </head>
 <body>
@@ -216,7 +340,7 @@
   </div>
 
   <div id="screen-map" class="screen">
-    <div id="mapHeader"><h2>Where to today?</h2><div class="sub">Tap a place on the map</div></div>
+    <div id="mapHeader"><h2>Where to today?</h2><div class="sub">Tap a place on the map</div><div id="starCount">⭐ 0/3</div></div>
     <div id="mapScroll"><div id="mapWrap"><img src="assets/map.png" alt="Town map"><div id="pins"></div></div></div>
   </div>
 
@@ -265,6 +389,25 @@
       <p id="rewardBody"></p>
       <div class="fa" id="rewardFa"></div>
       <button class="bigBtn" id="btnRewardMap" style="padding:10px 26px;font-size:14px;">Back to map</button>
+    </div>
+  </div>
+
+  <div id="screen-finale" class="screen">
+    <div class="finCert">
+      <div class="seal">&#127941;</div>
+      <div class="finKicker">Certificate of Achievement</div>
+      <h2>Farida</h2>
+      <div class="stars3"><span>&#11088;</span><span>&#11088;</span><span>&#11088;</span></div>
+      <p>Cafe, Pharmacy, Supermarket: all complete! You have learned a wonderful amount of English. Ordering a coffee, finding medicine, asking the price... you did it all, and beautifully.</p>
+      <p class="praise">Farida, you have learned a great deal of English! Well done, you are truly brilliant. &#128155;&#127766;</p>
+      <div class="fa">فریده جان، تو مقدار زیادی انگلیسی یاد گرفتی! آفرین، تو واقعاً درخشان هستی. &#128155;&#127766;</div>
+      <div class="finOffer">&#128140; Want more of this? I can make you a full game, in good English and Dari. Just tell me.
+        <div class="fa" style="font-size:14px;margin:4px 0 0">بیشتر می‌خواهی؟ برایت یک بازی کامل می‌سازم، با انگلیسی و دری. فقط بهم بگو</div></div>
+      <div class="finDate" id="finDate"></div>
+      <div class="finBtns">
+        <button class="bigBtn yes" id="btnDownloadCert">Download certificate &#11015;</button>
+        <button class="bigBtn" id="btnFinaleNext">Back to map</button>
+      </div>
     </div>
   </div>
 
@@ -347,7 +490,7 @@ const STAGES = {
 const progress = JSON.parse(localStorage.getItem('faridaEnglishProgress') || '{}');
 function saveProgress(){ localStorage.setItem('faridaEnglishProgress', JSON.stringify(progress)); }
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-document.getElementById('btnToMap').onclick = () => { showScreen('screen-map'); renderMap(); };
+document.getElementById('btnToMap').onclick = () => { if (allDone() && !progress._finale) return showFinale(); showScreen('screen-map'); renderMap(); };
 
 /* ---------------- SOUND EFFECTS ---------------- */
 let audioCtx = null;
@@ -391,6 +534,7 @@ function speakText(text, langPrefix, lang){
 
 /* ---------------- MAP ---------------- */
 function renderMap(){
+  updateStars();
   const wrap = document.getElementById('pins'); wrap.innerHTML = '';
   LOCATIONS.forEach(loc => {
     const done = progress[loc.id] === 'done';
@@ -402,11 +546,12 @@ function renderMap(){
     if (!loc.locked) pin.onclick = () => startDriving(loc.id);
     wrap.appendChild(pin);
   });
+  document.querySelector('#mapHeader .sub').textContent = 'Tap a place on the map';
 }
 
 /* ---------------- DRIVING CUTSCENE ---------------- */
 let driveCtx, driveCanvas, driveLaneW, driveH, driveAnim, driveTimer, driveStart;
-const DRIVE_MS = 1900;
+const DRIVE_MS = 2800;
 function startDriving(locId){
   document.getElementById('driveCap').textContent = 'Driving to the ' + LOCATIONS.find(l=>l.id===locId).name + '...';
   showScreen('screen-driving');
@@ -425,21 +570,45 @@ function startDriving(locId){
 }
 function easeInOut(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
 function driveLoop(){
-  const rect = driveCanvas.getBoundingClientRect();
+  const rect = driveCanvas.getBoundingClientRect(), W = rect.width, H = driveH;
   const elapsed = performance.now() - driveStart;
   const t = Math.min(1, elapsed / DRIVE_MS);
-  driveCtx.clearRect(0,0,rect.width,rect.height);
-  driveCtx.fillStyle = '#1a202c'; driveCtx.fillRect(0,0,rect.width,driveH);
-  driveCtx.strokeStyle = '#fff'; driveCtx.lineWidth = 2; driveCtx.setLineDash([20,20]);
-  for (let i=1;i<3;i++){ driveCtx.beginPath(); driveCtx.moveTo(i*driveLaneW,0); driveCtx.lineTo(i*driveLaneW,driveH); driveCtx.stroke(); }
-  driveCtx.setLineDash([]);
-  const px = driveLaneW*1.5;
-  const py = (driveH + 90) - easeInOut(t) * (driveH + 180);
-  driveCtx.fillStyle = '#e53e3e'; driveCtx.fillRect(px-17.5,py,35,50);
-  driveCtx.fillStyle = '#feb2b2'; driveCtx.fillRect(px-12.5,py+5,25,15);
-  driveCtx.fillStyle = '#1a202c';
-  driveCtx.fillRect(px-20.5,py+8,6,10); driveCtx.fillRect(px+14.5,py+8,6,10);
-  driveCtx.fillRect(px-20.5,py+30,6,10); driveCtx.fillRect(px+14.5,py+30,6,10);
+  const scroll = easeInOut(t) * 2600;           // how far the world has moved
+  const c = driveCtx; c.clearRect(0,0,W,H);
+  // grass with soft stripes
+  c.fillStyle = '#86b84f'; c.fillRect(0,0,W,H);
+  for (let y=-120+(scroll%120); y<H; y+=120){ c.fillStyle='rgba(255,255,255,.05)'; c.fillRect(0,y,W,60); }
+  // road
+  const rw = W*0.5, rx = (W-rw)/2;
+  c.fillStyle = '#e8d3a0'; c.fillRect(rx-10,0,rw+20,H);           // sandy edge
+  c.fillStyle = '#5d5560'; c.fillRect(rx,0,rw,H);                  // asphalt
+  c.fillStyle = '#fff6e5'; c.fillRect(rx+6,0,4,H); c.fillRect(rx+rw-10,0,4,H);
+  c.fillStyle = '#ffd35c';
+  for (let y=-70+(scroll%70); y<H; y+=70) c.fillRect(W/2-3,y,6,38);
+  // trees, bushes and flowers streaming past
+  const items = [[0.10,0,'t'],[0.86,45,'t'],[0.18,150,'b'],[0.80,190,'f'],[0.08,260,'f'],[0.90,320,'b'],[0.14,380,'t'],[0.84,440,'t']];
+  const period = 520;
+  items.forEach(([fx,off,k])=>{
+    for (let r=-1;r<Math.ceil(H/period)+1;r++){
+      const y = ((off + scroll) % period) + r*period - 40, x = fx*W;
+      if (k==='t'){ c.fillStyle='rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(x+8,y+30,26,12,0,0,7); c.fill();
+        c.fillStyle='#6b4a2b'; c.fillRect(x-4,y+8,8,24);
+        c.fillStyle='#3f8f3f'; c.beginPath(); c.arc(x,y,24,0,7); c.fill();
+        c.fillStyle='#58b04a'; c.beginPath(); c.arc(x-6,y-6,14,0,7); c.fill(); }
+      else if (k==='b'){ c.fillStyle='#4f9a3f'; c.beginPath(); c.arc(x,y,13,0,7); c.arc(x+12,y+4,10,0,7); c.fill(); }
+      else { c.fillStyle='#f6b4c8'; c.beginPath(); c.arc(x,y,5,0,7); c.fill(); c.fillStyle='#ffe27a'; c.beginPath(); c.arc(x,y,2,0,7); c.fill(); }
+    }
+  });
+  // the car: gentle sway, wheels and headlight beams
+  const sway = Math.sin(elapsed/180)*3, px = W/2 + sway, py = H*0.62;
+  c.fillStyle='rgba(0,0,0,.3)'; c.beginPath(); c.ellipse(px+4,py+36,28,48,0,0,7); c.fill();
+  c.fillStyle='rgba(255,240,170,.18)'; c.beginPath(); c.moveTo(px-14,py-30); c.lineTo(px-44,py-130); c.lineTo(px+44,py-130); c.lineTo(px+14,py-30); c.fill();
+  c.fillStyle='#1d1a22'; [[-27,-24],[19,-24],[-27,20],[19,20]].forEach(([dx,dy])=>c.fillRect(px+dx,py+dy,9,22));
+  c.fillStyle='#e04a4a'; c.beginPath(); c.roundRect(px-22,py-42,44,92,14); c.fill();
+  c.fillStyle='#f27a7a'; c.beginPath(); c.roundRect(px-16,py-38,32,24,9); c.fill();
+  c.fillStyle='#fff6e5'; c.beginPath(); c.roundRect(px-15,py-16,30,30,8); c.fill();   // roof
+  c.fillStyle='#8fd3f4'; c.beginPath(); c.roundRect(px-14,py-26,28,12,5); c.fill(); c.beginPath(); c.roundRect(px-14,py+14,28,10,5); c.fill();
+  c.fillStyle='#ffe27a'; c.beginPath(); c.arc(px-14,py-40,4,0,7); c.arc(px+14,py-40,4,0,7); c.fill();
   if (t < 1) driveAnim = requestAnimationFrame(driveLoop);
 }
 function finishDriving(locId){ cancelAnimationFrame(driveAnim); startLocation(locId); }
@@ -615,12 +784,12 @@ function renderBuildStage(stage){
 function celebrate(){
   const wrap = document.getElementById('celebrate');
   const colors = ['#fbd38d','#48bb78','#f687b3','#fff','#9f7aea'];
-  for (let i=0;i<22;i++){
+  for (let i=0;i<60;i++){
     const d = document.createElement('div'); d.className='confettiBit';
     const size = 6+Math.random()*5;
     d.style.width=size+'px'; d.style.height=size+'px';
     d.style.left=(Math.random()*100)+'%';
-    d.style.background=colors[i%colors.length];
+    d.style.background=colors[i%colors.length]; if(i%3===0) d.style.borderRadius='50%';
     d.style.animationDuration=(1.6+Math.random()*1.2)+'s';
     d.style.animationDelay=(Math.random()*0.3)+'s';
     wrap.appendChild(d);
@@ -631,6 +800,7 @@ function celebrate(){
 function handleCorrectDirect(skipVisual){
   playCorrect();
   setCharacter('happy');
+  starBurst();
   document.getElementById('bubbleTxt').textContent = "That's right! Well done.";
   setTimeout(()=>{
     curIndex++;
@@ -678,10 +848,124 @@ function finishLocation(){
   document.getElementById('rewardBody').textContent = `You finished all the exercises at the ${curLoc.name}!`;
   const line = DARI_COMPLETION_LINES[Math.floor(Math.random()*DARI_COMPLETION_LINES.length)];
   document.getElementById('rewardFa').textContent = line;
-  speakText(line, 'fa', 'fa-AF');
-  setTimeout(()=>showScreen('screen-reward'), 650);
+  if (!allDone()) speakText(line, 'fa', 'fa-AF');
+  setTimeout(()=> allDone() ? showFinale() : showScreen('screen-reward'), 650);
 }
 document.getElementById('btnRewardMap').onclick = () => { showScreen('screen-map'); renderMap(); };
+
+/* ---- extra life: drifting emoji, fireflies, star bursts ---- */
+function addDrift(sel, chars, n){
+  const host = document.querySelector(sel);
+  const layer = document.createElement('div'); layer.className='driftLayer';
+  for (let i=0;i<n;i++){
+    const d = document.createElement('div'); d.className='drift';
+    d.textContent = chars[i%chars.length];
+    d.style.left = (Math.random()*92)+'%'; d.style.fontSize = (18+Math.random()*18)+'px';
+    d.style.animationDuration = (7+Math.random()*6)+'s'; d.style.animationDelay = (-Math.random()*10)+'s';
+    layer.appendChild(d);
+  }
+  host.prepend(layer);
+}
+addDrift('#screen-start', ['🎈','🎉','✨','🌸','⭐'], 12);
+addDrift('#screen-reward', ['⭐','✨','🌸','🎈'], 10);
+(function(){ const w = document.getElementById('mapWrap');
+  for (let i=0;i<16;i++){ const f=document.createElement('div'); f.className='firefly';
+    f.style.left=(Math.random()*95)+'%'; f.style.top=(Math.random()*95)+'%';
+    f.style.animationDelay=(-Math.random()*7)+'s'; f.style.animationDuration=(5+Math.random()*5)+'s'; w.appendChild(f); } })();
+function starBurst(){
+  const scene = document.getElementById('scene'), ch = document.getElementById('character');
+  const sr = scene.getBoundingClientRect(), cr = ch.getBoundingClientRect();
+  const cx = cr.left - sr.left + cr.width/2, cy = cr.top - sr.top + cr.height*0.35;
+  const bits = ['⭐','✨','💛','🌟'];
+  for (let i=0;i<10;i++){
+    const b = document.createElement('div'); b.className='starBit'; b.textContent = bits[i%bits.length];
+    const a = (Math.PI*2*i/10) + Math.random()*0.4, dist = 70+Math.random()*60;
+    b.style.left = cx+'px'; b.style.top = cy+'px';
+    b.style.setProperty('--dx', Math.cos(a)*dist+'px'); b.style.setProperty('--dy', Math.sin(a)*dist-20+'px');
+    b.style.setProperty('--rot', (Math.random()*240-120)+'deg');
+    scene.appendChild(b); setTimeout(()=>b.remove(), 950);
+  }
+}
+
+/* ---- v3 extras ---- */
+let lastStars = -1;
+function updateStars(){
+  const n = LOCATIONS.filter(l => progress[l.id]==='done').length;
+  const el = document.getElementById('starCount');
+  el.textContent = '\u2b50 ' + n + '/' + LOCATIONS.length;
+  if (lastStars !== -1 && n > lastStars){ el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+  lastStars = n;
+}
+(function(){
+  const w = document.getElementById('mapWrap');
+  for (let i=0;i<3;i++){ const c=document.createElement('div'); c.className='cloud';
+    c.style.top=(10+i*30)+'%'; c.style.animationDuration=(40+i*12)+'s'; c.style.animationDelay=(-i*15)+'s'; w.appendChild(c); }
+})();
+
+/* ---------------- FINALE: certificate ---------------- */
+const FROM_NAME = ''; // put your name here (e.g. 'Ahmad') and it signs the certificate
+function allDone(){ return LOCATIONS.every(l => progress[l.id]==='done'); }
+function playFanfare(){ try { [523,659,784,1047].forEach((f,i)=>tone(f,i*0.13,0.25,'triangle',0.2)); tone(1319,0.55,0.6,'sine',0.2); tone(1047,0.55,0.6,'triangle',0.15); } catch(e){} }
+function rain(sel, chars, n){
+  const host = document.querySelector(sel);
+  for (let i=0;i<n;i++){
+    const d = document.createElement('div'); d.className='rainBit'; d.textContent = chars[i%chars.length];
+    d.style.left = (Math.random()*94)+'%'; d.style.fontSize = (18+Math.random()*20)+'px';
+    d.style.animationDuration = (2.2+Math.random()*2)+'s'; d.style.animationDelay = (Math.random()*1.5)+'s';
+    host.appendChild(d); setTimeout(()=>d.remove(), 5500);
+  }
+}
+function showFinale(){
+  progress._finale = 'seen'; saveProgress();
+  document.getElementById('finDate').textContent = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) + (FROM_NAME ? '  \u00b7  With love, ' + FROM_NAME : '');
+  showScreen('screen-finale'); playFanfare();
+  rain('#screen-finale', ['\u{1F49B}','\u2B50','\u2728','\u{1F389}','\u{1F338}'], 28);
+  setTimeout(()=>speakText('Congratulations, Farida! You did it!','en','en-US'), 700);
+  setTimeout(()=>speakText('آفرین فریده جان! تو موفق شدی!','fa','fa-AF'), 3800);
+}
+document.getElementById('btnFinaleNext').onclick = () => { showScreen('screen-map'); renderMap(); };
+/* Draws the certificate onto a canvas and downloads it as a PNG */
+async function downloadCertificate(){
+  try { await Promise.all([document.fonts.load("600 40px Fredoka"), document.fonts.load("600 40px Vazirmatn"), document.fonts.load("400 30px Vazirmatn")]); } catch(e){}
+  const W=1400, H=1000, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d');
+  const SANS="Fredoka, 'Segoe UI', sans-serif", FA="Vazirmatn, Tahoma, sans-serif";
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#fffdf7'); g.addColorStop(1,'#fff1d6');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.strokeStyle='#e0a928'; x.lineWidth=16; x.strokeRect(34,34,W-68,H-68);
+  x.lineWidth=3; x.strokeRect(66,66,W-132,H-132);
+  x.textAlign='center'; x.textBaseline='alphabetic'; x.direction='ltr';
+  const wrap=(txt,maxW)=>{ const words=txt.split(' '), lines=[]; let cur='';
+    words.forEach(w=>{ const t=cur?cur+' '+w:w; if (x.measureText(t).width>maxW && cur){ lines.push(cur); cur=w; } else cur=t; });
+    if (cur) lines.push(cur); return lines; };
+  x.font='96px sans-serif'; x.fillStyle='#000'; x.fillText('\u{1F3C5}', W/2, 210);
+  x.fillStyle='#b5527a'; x.font='600 30px '+SANS; try { x.letterSpacing='6px'; } catch(e){}
+  x.fillText('CERTIFICATE OF ACHIEVEMENT', W/2, 280); try { x.letterSpacing='0px'; } catch(e){}
+  x.fillStyle='#5b3a24'; x.font='600 130px '+SANS; x.fillText('Farida', W/2, 420);
+  x.font='64px sans-serif'; x.fillStyle='#000'; x.fillText('\u2B50 \u2B50 \u2B50', W/2, 510);
+  x.fillStyle='#6b5444'; x.font='400 34px '+SANS;
+  let y=590;
+  wrap('Cafe, Pharmacy, Supermarket: all complete! You have learned a wonderful amount of English.', 960).forEach(l=>{ x.fillText(l, W/2, y); y+=48; });
+  y+=24; x.direction='rtl'; x.fillStyle='#b5527a'; x.font='600 40px '+FA;
+  wrap('\u0641\u0631\u06CC\u062F\u0647 \u062C\u0627\u0646\u060C \u062A\u0648 \u0645\u0642\u062F\u0627\u0631 \u0632\u06CC\u0627\u062F\u06CC \u0627\u0646\u06AF\u0644\u06CC\u0633\u06CC \u06CC\u0627\u062F \u06AF\u0631\u0641\u062A\u06CC! \u0622\u0641\u0631\u06CC\u0646\u060C \u062A\u0648 \u0648\u0627\u0642\u0639\u0627\u064B \u062F\u0631\u062E\u0634\u0627\u0646 \u0647\u0633\u062A\u06CC. \u{1F49B}\u{1F316}', 1000)
+    .forEach(l=>{ x.fillText(l, W/2, y); y+=70; });
+  x.direction='ltr'; x.fillStyle='#a0aec0'; x.font='400 28px '+SANS;
+  const d=document.getElementById('finDate').textContent || new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  x.fillText(d, W/2, H-110);
+  cv.toBlob(blob=>{
+    if (!blob) return;
+    const url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url; a.download='Farida-Certificate.png'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 5000);
+  }, 'image/png');
+}
+document.getElementById('btnDownloadCert').onclick = downloadCertificate;
+document.addEventListener('pointerdown', e => {
+  const app = document.getElementById('app'), r = app.getBoundingClientRect();
+  const d = document.createElement('div'); d.className='ripple';
+  d.style.left=(e.clientX-r.left)+'px'; d.style.top=(e.clientY-r.top)+'px';
+  app.appendChild(d); setTimeout(()=>d.remove(), 650);
+});
 </script>
 </body>
 </html>
